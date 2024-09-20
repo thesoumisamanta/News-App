@@ -89,12 +89,12 @@ export default function Navbar() {
                         >
                             Categories
                         </a>
-                        <a
+                        {/* <a
                             href="/about"
                             className="text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium"
                         >
                             About
-                        </a>
+                        </a> */}
                         <a
                             href="/contact"
                             className="text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium"
