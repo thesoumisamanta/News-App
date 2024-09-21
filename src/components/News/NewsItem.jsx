@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function NewsItem(props) {
     return (
         <div className="flex justify-center">
@@ -22,6 +24,7 @@ export default function NewsItem(props) {
                     </p>
                     <a
                         href={props.url}
+                        target="_blank"
                         className="inline-block bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all hover:bg-blue-600"
                     >
                         Read More

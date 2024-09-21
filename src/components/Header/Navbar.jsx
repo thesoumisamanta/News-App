@@ -1,8 +1,35 @@
-import { useState } from "react"
+import React, { useState, useEffect, useRef } from "react";
+import Categories from "../News/Categories";
+import Countries from "../News/Countries";
 
-export default function Navbar() {
+export default function Navbar({ onSelectCategory, onSelectCountry }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+    const countryDropdownRef = useRef(null);
 
-    const [isOpen, setIsOpen] = useState(false)
+    const handleClickOutside = (event) => {
+        if (
+            dropdownRef.current &&
+            !dropdownRef.current.contains(event.target)
+        ) {
+            setIsDropdownOpen(false);
+        }
+        if (
+            countryDropdownRef.current &&
+            !countryDropdownRef.current.contains(event.target)
+        ) {
+            setIsCountryDropdownOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <>
@@ -21,18 +48,36 @@ export default function Navbar() {
                             >
                                 Home
                             </a>
-                            <a
-                                href="/categories"
-                                className="text-gray-700 hover:text-red-500 px-3 py-2 rounded-md text-md font-medium"
-                            >
-                                Categories
-                            </a>
-                            {/* <a
-                                href="/about"
-                                className="text-gray-700 hover:text-red-500 px-3 py-2 rounded-md text-md font-medium"
-                            >
-                                About
-                            </a> */}
+                            {/* Categories Dropdown */}
+                            <div className="relative" ref={dropdownRef}>
+                                <button
+                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    className="flex items-center text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-md font-medium"
+                                >
+                                    Categories
+                                    <span className="ml-1">▼</span>
+                                </button>
+                                <Categories
+                                    isOpen={isDropdownOpen}
+                                    onSelectCategory={onSelectCategory}
+                                    closeDropdown={() => setIsDropdownOpen(false)}
+                                />
+                            </div>
+                            {/* Countries Dropdown */}
+                            <div className="relative" ref={countryDropdownRef}>
+                                <button
+                                    onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
+                                    className="flex items-center text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-md font-medium"
+                                >
+                                    Countries
+                                    <span className="ml-1">▼</span>
+                                </button>
+                                <Countries
+                                    isOpen={isCountryDropdownOpen}
+                                    onSelectCountry={onSelectCountry}
+                                    closeDropdown={() => setIsCountryDropdownOpen(false)}
+                                />
+                            </div>
                             <a
                                 href="/contact"
                                 className="text-gray-700 hover:text-red-500 px-3 py-2 rounded-md text-md font-medium"
@@ -83,18 +128,34 @@ export default function Navbar() {
                         >
                             Home
                         </a>
-                        <a
-                            href="/categories"
-                            className="text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium"
-                        >
-                            Categories
-                        </a>
-                        {/* <a
-                            href="/about"
-                            className="text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium"
-                        >
-                            About
-                        </a> */}
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                className="flex items-center text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium"
+                            >
+                                Categories
+                                <span className="ml-1">▼</span>
+                            </button>
+                            <Categories
+                                isOpen={isDropdownOpen}
+                                onSelectCategory={onSelectCategory}
+                                closeDropdown={() => setIsDropdownOpen(false)}
+                            />
+                        </div>
+                        <div className="relative" ref={countryDropdownRef}>
+                            <button
+                                onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
+                                className="flex items-center text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium"
+                            >
+                                Countries
+                                <span className="ml-1">▼</span>
+                            </button>
+                            <Countries
+                                isOpen={isCountryDropdownOpen}
+                                onSelectCountry={onSelectCountry}
+                                closeDropdown={() => setIsCountryDropdownOpen(false)}
+                            />
+                        </div>
                         <a
                             href="/contact"
                             className="text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium"
@@ -105,5 +166,5 @@ export default function Navbar() {
                 )}
             </nav>
         </>
-    )
+    );
 }
